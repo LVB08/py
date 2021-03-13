@@ -1,0 +1,14 @@
+{% extends "pizzas/base.html" %}
+
+{% block content %}
+<p>Species</p>
+<ul>
+    {% for ine in species %}
+      <li>
+          <a href="{% url 'pizzas:ine' ine.id %}">{{ ine }}</a>
+      </li>
+    {% empty %}
+      <li>No Pizza have been added yet.</li>
+    {% endfor %}
+</ul>
+{% endblock content %}

@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from mySQLop import connection_sql
+from music_taihe_com.mySQLop import connection_insert
 
 def get_selValue():
     """获取选择项信息如：首字母、地区、乐队&组合"""
@@ -65,6 +65,7 @@ if __name__ == '__main__':
     region = get_selValue()[1]
     gender = get_selValue()[2]
     arr = []
+    insert_sql = ''
     for x in region:  # 遍历地区
         areaValue = x
         for y in gender:  # 遍历类型
@@ -82,7 +83,10 @@ if __name__ == '__main__':
                     Url = 'https://music.taihe.com/artist?pageNo=' + str(i) + '&artistFristLetter=' + z + '&artistRegion=' + x + '&artistGender=' + y
                     arr = get_single(arr, Url, typeValue, genderValue, areaValue, initialsV)
     print(len(arr))
-    connection_sql(arr)
+    # 插入数据格式：[['歌手','邓紫棋1','女','大陆','D'],['歌手','邓紫棋2','女','大陆','D'],['歌手','邓紫棋3','女','大陆','D']]
+    insert_sql = """insert into singer_info (type,name,gender,area,initials) 
+                        values (%s,%s,%s,%s,%s)"""
+    connection_insert(insert_sql,arr)
 
 
 
